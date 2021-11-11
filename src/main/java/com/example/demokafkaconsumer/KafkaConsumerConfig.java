@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,6 +64,10 @@ public class KafkaConsumerConfig {
 	        Map<String, Object> props = new HashMap<>();
 	        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
 	        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
+	        
+	        props.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, 5000);
+	        props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, Integer.toString(Integer.MAX_VALUE));
+	        
 	        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 	        return new DefaultKafkaConsumerFactory<>(props, 
 	                new StringDeserializer(), 
@@ -93,6 +98,8 @@ public class KafkaConsumerConfig {
 	        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
 	        props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
 	        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+	        props.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, 5000);
+		     
 	        return new DefaultKafkaConsumerFactory<>(props, 
 	                new StringDeserializer(), 
 	                new JsonDeserializer<>(Employee.class));
